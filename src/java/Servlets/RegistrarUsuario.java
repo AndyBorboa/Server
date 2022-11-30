@@ -39,7 +39,7 @@ public class RegistrarUsuario extends HttpServlet {
         String contraseña = request.getParameter("pass");
         
         Consultas co = new Consultas();
-        if(co.registrar(nombreUsuario, contraseña)){
+        if(co.registrarUsuario(nombreUsuario, contraseña)){
             response.sendRedirect("index.jsp");
             
         }else{

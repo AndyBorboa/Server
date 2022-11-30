@@ -39,7 +39,7 @@ public class AgregarProducto extends HttpServlet {
         float Precio = Float.parseFloat(request.getParameter("Precio"));
         
         Consultas co = new Consultas();
-        if(co.registrar(nombreProducto, Categoria, Stock, Precio)){
+        if(co.registrar(nombreProducto, Categoria, Stock, Precio).equalsIgnoreCase("Producto Agregado")){
             response.sendRedirect("Mostrar.jsp");
             
         }else{

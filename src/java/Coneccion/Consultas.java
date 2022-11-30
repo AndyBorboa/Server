@@ -8,15 +8,19 @@ package Coneccion;
 import beans.Producto;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  * @author andre
  */
 public class Consultas extends Conexion {
+    int resp;
+    String msj;
     
     
-    public boolean registrar (String nombreProducto, String categoria, int stock, float precio){
+    public String registrar (String nombreProducto, String categoria, int stock, float precio){
         PreparedStatement pst = null;
         
         try{
@@ -27,9 +31,13 @@ public class Consultas extends Conexion {
             pst.setInt(3, stock);
             pst.setFloat(4, precio);
             
-            
-            if(pst.executeUpdate()==1){
-                return true;
+            resp= pst.executeUpdate();
+            if(resp==1){
+                msj= "Producto Agregado";
+                return msj;
+            }else{
+                msj = "Error";
+                return msj;
             }
             
         }catch(Exception ex){
@@ -44,7 +52,7 @@ public class Consultas extends Conexion {
             }
             
         }
-        return false;
+        return msj;
     }
     
      public boolean actualizar(int codigo, String nombreProducto, String categoria, int stock, float precio){
@@ -138,7 +146,7 @@ public class Consultas extends Conexion {
         return false;
      }
      
-     public boolean registrar (String nombreUsuario, String contraseña){
+     public boolean registrarUsuario (String nombreUsuario, String contraseña){
         PreparedStatement pst = null;
         
         try{
@@ -197,4 +205,96 @@ public class Consultas extends Conexion {
         return false;
             
     }
+     
+     public List listar(){
+         PreparedStatement pst = null;
+         ResultSet rs = null;
+         List<Producto> datos = new ArrayList<>();
+         
+         try{
+             String sql ="select * from productos";
+             pst = getConexion().prepareStatement(sql);
+             rs = pst.executeQuery();
+             
+             while(rs.next()){
+                 Producto p = new Producto();
+                 p.setCodigo(rs.getInt("Codigo"));
+                 p.setNombreProducto(rs.getString("nombreProducto"));
+                 p.setCategoria(rs.getString("Categoria"));
+                 p.setStock(rs.getInt("Stock"));
+                 p.setPrecio(rs.getFloat("Precio"));
+                 datos.add(p);
+             }
+         
+         }catch(Exception e){
+            System.out.println("Error: " +e);
+         }finally{
+             
+             try{
+                 if(getConexion()!=null) getConexion().close();
+                 if(rs!=null) rs.close();
+             }catch(Exception e){
+                 System.out.println("Error: "+e);
+             }
+         }
+         return datos;
+     }
+     
+     public Producto listarClave(int Codigo){
+         PreparedStatement pst = null;
+         ResultSet rs = null;
+         Producto p = new Producto();
+         
+         try{
+             String sql = "select * from productos where Codigo="+Codigo;
+             pst = getConexion().prepareStatement(sql);
+             rs = pst.executeQuery();
+             
+             while(rs.next()){
+                 p.setCodigo(rs.getInt("Codigo"));
+                 p.setNombreProducto(rs.getString("nombreProducto"));
+                 p.setCategoria(rs.getString("Categoria"));
+                 p.setStock(rs.getInt("Stock"));
+                 p.setPrecio(rs.getFloat("Precio"));
+             }
+         
+         }catch(Exception e){
+            System.out.println("Error: " +e);
+         }finally{
+             
+             try{
+                 if(getConexion()!=null) getConexion().close();
+                 if(rs!=null) rs.close();
+             }catch(Exception e){
+                 System.out.println("Error: "+e);
+             }
+         }
+         return p; 
+     }
+     
+     public String edit(int Clave, String nombreProducto, String Categoria, int Stock, float Precio){
+         PreparedStatement pst = null;
+         ResultSet rs = null;
+         String sql="UPDATE productos SET nombreProducto=?, Categoria=?, Stock=?, Precio=? WHERE Codigo="+Clave;
+         try{
+             pst = getConexion().prepareStatement(sql);
+             pst.setString(1, nombreProducto);
+             pst.setString(2, Categoria);
+             pst.setInt(3, Stock);
+             pst.setFloat(4, Precio);
+             
+             resp = pst.executeUpdate();
+             if(resp==1){
+                 msj="Usuario Actualizado";
+             }else{
+                 msj="Error";
+             }
+         }catch (Exception e){
+             
+         }
+         
+         return msj;
+     }
+         
+     
 }
