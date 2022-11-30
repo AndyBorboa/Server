@@ -295,6 +295,19 @@ public class Consultas extends Conexion {
          
          return msj;
      }
+     
+     public Producto delete(int Codigo){
+         PreparedStatement pst = null;
+         Producto product = new Producto();
+         String sql = "delete from productos where Codigo="+Codigo;
+         try{
+             pst = getConexion().prepareStatement(sql);
+             pst.executeUpdate();
+         }catch(Exception e){
+             
+         }
+         return product;
+     }
          
      
 }

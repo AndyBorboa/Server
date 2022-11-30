@@ -59,6 +59,15 @@ public class Servicios {
         return datos;
     }
 
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "eliminar")
+    public Producto eliminar(@WebParam(name = "Clave") int Clave) {
+        Producto product = dao.delete(Clave);
+        return product;
+    }
+
 
     
 }
