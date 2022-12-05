@@ -6,6 +6,7 @@
 package Coneccion;
 
 import beans.Producto;
+import beans.Usuario;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -146,35 +147,7 @@ public class Consultas extends Conexion {
         return false;
      }
      
-     public boolean registrarUsuario (String nombreUsuario, String contraseña){
-        PreparedStatement pst = null;
-        
-        try{
-            String consulta ="insert into usuario (usuario,contraseña) values (?,?)";
-            pst= getConexion().prepareStatement(consulta);
-            pst.setString(1, nombreUsuario);
-            pst.setString(2, contraseña);
-        
-            
-            
-            if(pst.executeUpdate()==1){
-                return true;
-            }
-            
-        }catch(Exception ex){
-            
-        }finally{
-            try{
-                if(getConexion()!=null) getConexion().close();
-                if(pst!=null) pst.close();
-                
-            }catch(Exception e){
-                System.out.println("Error: " +e);
-            }
-            
-        }
-        return false;
-    }
+     
 
      
      public boolean actualizarUsuario(String usuario, String contraseña, String nuevaContraseña){
@@ -307,7 +280,38 @@ public class Consultas extends Conexion {
              
          }
          return product;
-     }
          
+         
+     }
+
+     public boolean registrarUsuario (String nombreUsuario, String contraseña){
+        PreparedStatement pst = null;
+        
+        try{
+            String consulta ="insert into usuario (usuario,contraseña) values (?,?)";
+            pst= getConexion().prepareStatement(consulta);
+            pst.setString(1, nombreUsuario);
+            pst.setString(2, contraseña);
+        
+            
+            
+            if(pst.executeUpdate()==1){
+                return true;
+            }
+            
+        }catch(Exception ex){
+            
+        }finally{
+            try{
+                if(getConexion()!=null) getConexion().close();
+                if(pst!=null) pst.close();
+                
+            }catch(Exception e){
+                System.out.println("Error: " +e);
+            }
+            
+        }
+        return false;
+    }
      
 }
