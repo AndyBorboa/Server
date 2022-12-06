@@ -13,9 +13,7 @@ public class Pruebas {
     
      public static void main(String[] args) {
     Consultas co = new Consultas();
-    //System.out.println(co.actualizarUsuario("Acertiijo","googie123","mango123"));
-    //System.out.println(co.registrar("Avena Quaker","Cereales",20,98.5f));
-    //System.out.println(co.actualizar("Avena Quaker","Cereales",30,4.25f));
+    System.out.println(co.autenticacion("Acertiijo", "mango123"));
     }
      
 }
